@@ -40,18 +40,18 @@ router.get('/:id', function(req, res, next) {
             let metaData = cheerio(rows[0]).find("font").toArray();
             
             let reply = {};
-            console.log(metaData);
             reply.title = cheerio(metaData[0]).text();
-            reply.author = cheerio(metaData[2]).text();
-            reply.content = cheerio(rows[2]).html();
-            article.Replies.push(reply);
+            if (reply.title != null) {
+                reply.author = cheerio(metaData[2]).text();
+                reply.content = cheerio(rows[2]).html();
+                article.Replies.push(reply);
+            }
         });
 
         console.log(article); // Print out the HTML
 
         article.Content.find("img").each(function(i, element){
             var origSrc = $(element).attr("src");
-            console.log(origSrc);
             if (!origSrc.startsWith("http")) {
                 $(element).attr("src", "https://whatsup.org.il/" + origSrc);
             }
