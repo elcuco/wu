@@ -1,9 +1,16 @@
 body {
-  padding: 50px;
+  padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   direction: rtl;
+  padding: 5px;
 }
 
 a {
   color: #00B7FF;
+}
+
+
+div.date {
+    border-bottom: 1px solid silver;
+    margin-bottom: 10px;
 }
