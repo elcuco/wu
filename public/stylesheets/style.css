@@ -5,6 +5,9 @@ body {
   padding: 0px;
 }
 
+pre {
+  direction: ltr;
+}
 a {
   color: #00B7FF;
 }
