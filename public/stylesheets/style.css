@@ -2,15 +2,36 @@ body {
   padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   direction: rtl;
-  padding: 5px;
+  padding: 0px;
 }
 
 a {
   color: #00B7FF;
 }
 
+div.article {
+  padding: 5px;
+  margin-bottom: 10px;
+}
 
 div.date {
     border-bottom: 1px solid silver;
     margin-bottom: 10px;
+}
+
+div.comments {
+
+}
+
+div.comments div.comment {
+  padding-bottom:  10px;
+  margin-bottom: 1px solid blue;
+}
+
+div.comments  div.comment div.author {
+  background-color: #d0dde6;
+}
+
+div.comments  div.comment  div.content {
+  background-color: #e9eff4;
 }

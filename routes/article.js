@@ -42,13 +42,14 @@ router.get('/:id', function(req, res, next) {
             let reply = {};
             reply.title = cheerio(metaData[0]).text();
             if (reply.title != null) {
+                // console.log(metaData);
                 reply.author = cheerio(metaData[2]).text();
-                reply.content = cheerio(rows[2]).html();
+                reply.content = cheerio(rows[1]).html();
                 article.Replies.push(reply);
             }
         });
 
-        console.log(article); // Print out the HTML
+        // console.log(article); // Print out the HTML
 
         article.Content.find("img").each(function(i, element){
             var origSrc = $(element).attr("src");
@@ -69,7 +70,8 @@ router.get('/:id', function(req, res, next) {
             title: article.Title,
             date: article.Date,
             author: article.Author,
-            content: article.Content.html()
+            content: article.Content.html(),
+            comments: article.Replies
         });
     });
 });

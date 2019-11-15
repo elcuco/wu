@@ -3,4 +3,10 @@ extends layout
 block content
   h1 #{title}
   div.date #{date} | #{author}
-  div.content !{content}
+  div.article !{content}
+
+  div.comments
+    each comment in comments
+      div.comment
+        div.author #{comment.author}
+        div.content !{comment.content}
