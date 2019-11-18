@@ -1,7 +1,7 @@
 var whatsupCrawler = require("./WhatsupCrawler");
 var DefaultCacheTimeout = 1000 * 90; // 90 seconds of time cache
 
-class WhatsupCached {
+class WhatsupMemoryCached {
     constructor(baseURL) {
         this.cache = require('memory-cache');
         this.client = new whatsupCrawler(baseURL);
@@ -27,12 +27,12 @@ class WhatsupCached {
     fetchArticle(articleID, callback) {
         var article = this.cache.get("article/" + articleID)
         if (article != null) {
-            console.log("Article " + articleID + "was found in cache - using it");
+            console.log("Article " + articleID + " was found in cache - using it");
             callback(article, null);
             return null;
         }
 
-        console.log("Main page is not in cache - getting");
+        console.log("Article " + articleID  +" is not in cache - getting");
         var _cache = this.cache;
         this.client.fetchArticle( articleID, function(article, error) {
             _cache.put("article/" + articleID, article, DefaultCacheTimeout );
@@ -42,4 +42,4 @@ class WhatsupCached {
     }
 };
 
-module.exports = WhatsupCached;
+module.exports = WhatsupMemoryCached;
