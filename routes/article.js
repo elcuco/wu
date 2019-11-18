@@ -16,11 +16,11 @@ router.get('/:id', function(req, res, next) {
         }
 
         res.render('article', {
-            title: article.Title,
-            date: article.Date,
-            author: article.Author,
-            content: article.Content.html(),
-            comments: article.Replies
+            title: article.title,
+            date: article.date,
+            author: article.author,
+            content: article.content,
+            comments: article.replies
         });
     });
 });

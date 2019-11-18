@@ -77,15 +77,15 @@ class WhatsupCrawler {
             let articleHTML = $("div.ng_article");
             
             let article = {};
+            let metaData = articleHTML.find("div.ng_info_row").text().split("·")
 
             // basic structure
-            article.Content = articleHTML.find("span.pn-art").remove("a.pn-normal")
-            article.Title = articleHTML.find("h1.ng_article_title a.pn-title").text()
-            article.MetaData = articleHTML.find("div.ng_info_row").text().split("·")
-            article.Date = article.MetaData[0]
-            article.Author = article.MetaData[1]
-            article.Topic = article.MetaData[2]
-            article.Replies = []
+            article.content = articleHTML.find("span.pn-art").remove("a.pn-normal");
+            article.title = articleHTML.find("h1.ng_article_title a.pn-title").text();
+            article.date = metaData[0].trim();
+            article.author = metaData[1].trim();
+            article.topic = metaData[2].trim();
+            article.replies = [];
 
             // add comments
             $("form table").each( function(i, element) {
@@ -99,26 +99,26 @@ class WhatsupCrawler {
                     // console.log(metaData);
                     reply.author = cheerio(metaData[2]).text();
                     reply.content = cheerio(rows[1]).html();
-                    article.Replies.push(reply);
+                    article.replies.push(reply);
                 }
             });
 
             // patch content to contain absolute paths
-            article.Content.find("img").each(function(i, element){
+            article.content.find("img").each(function(i, element){
                 var origSrc = $(element).attr("src");
                 if (!origSrc.startsWith("http")) {
                     $(element).attr("src", "https://whatsup.org.il/" + origSrc);
                 }
             })
             
-            article.Content.find("a").each(function(i, element){
+            article.content.find("a").each(function(i, element){
                 var origHref = $(element).attr("href");
                 // console.log("a %d", origHref);
                 if (origHref.startsWith("/")) {
                     $(element).attr("href", "https://whatsup.org.il" + origHref);
                 }
             });
-            
+            article.content = article.content.html()
             callback(article, null);
         });
     }
