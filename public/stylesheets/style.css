@@ -6,6 +6,19 @@ body {
   margin: 0px;
 }
 
+
+div.bottom {
+  background-color: #3174c4;
+  color: #eeeeec;
+  text-align: center;
+  height: 38px;
+  line-height: 38px;
+}
+
+div.bottom a {
+  color: #fce94f;
+}
+
 h1 {
   height: 42px;
   height: 51px;
@@ -32,7 +45,7 @@ h1 span.title {
   height: 100%;
   padding-right: 5px;
   margin-right: 5px;
-  font-size: 38px;
+  font-size: 28px;
 }
 
 h1 span.image {
@@ -47,7 +60,8 @@ pre {
 }
 
 a {
-  color: #00B7FF;
+  /* color: #00B7FF; */
+  color : #f57900;
 }
 
 div.articles {
