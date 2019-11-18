@@ -10,9 +10,12 @@ function extractArticle(element) {
     };
     var e = cheerio(element)
     var a = e.find("a");
+    var info = e.find("span").html().split("|");
+
     article.title = a.text();
     article.number = a.attr("href").replace("print.php?sid=", "")
-    article.info = e.find("span").text();
+    article.date = info[1].split("<br>")[1];
+    article.category = info[1].split("<br>")[0];
     return article;
 }
 
