@@ -1,16 +1,16 @@
 'use strict'
 
-var whatsup = require("../WhatsupCrawler");
 var express = require('express');
 var router = express.Router();
+
+var whatsup = require("../WhatsupCrawler");
 var client = new whatsup("https://whatsup.org.il")
 
 router.get('/:id', function(req, res, next) {
     var articleID = req.params.id;
     client.fetchArticle( articleID, function(article, error) {
-        console.log(error)
         if (error != null) {
-            console.log("FAIL - error")
+            console.log(error)
             res.render("error")
             return;
         }

@@ -1,12 +1,18 @@
 extends layout
 
 block content
-  h1 #{title}
-  div.date #{date} | #{author}
-  div.article !{content}
+  h1
+    //- span.logo
+    span.title="Whatsup"
+    span.image
 
-  div.comments
-    each comment in comments
-      div.comment
-        div.author #{comment.author}
-        div.content !{comment.content}
+  div.articles
+    h2 #{title}
+    div.date #{date} | #{author}
+    div.article !{content}
+
+    div.comments
+      each comment in comments
+        div.comment
+          div.author #{comment.author}
+          div.content !{comment.content}

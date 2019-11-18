@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1
+    //- span.logo
+    span.title="Whatsup"
+    span.image
+
+  div.articles
+    h2= "ידיעות"
+    ul
+      each article in articles
+        li
+          a(href="article/" + article.number) !{article.title}
+          span &nbsp; | !{article.info}
+    h2= "פורומים"
+    ul
+      each article in forums
+        li !{article.title} | !{article.info}
+          a(href="forum/" + article.number) !{article.title}
+          span &nbsp; | !{article.info}

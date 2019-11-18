@@ -3,15 +3,56 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   direction: rtl;
   padding: 0px;
+  margin: 0px;
+}
+
+h1 {
+  height: 42px;
+  height: 51px;
+  margin: 0px;
+  background: #3465a4 url(https://whatsup.org.il/themes/WhatsupNG/images/blue_waves.png);
+}
+
+h1 span.logo {
+  background-image: url("http://whatsup.co.il/whatsup/images/mobile_logo.png");
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  float: right;
+  height: 100%;
+  width: 38px;
+}
+
+h1 span.title {
+  color: #eeeeec;
+  /* text-shadow: 1px 1px 2px black;  */
+  text-shadow: #222 1px 0 10px;
+  /* text-shadow: 2px 2px black;  */
+  overflow: hidden;
+  height: 100%;
+  padding-right: 5px;
+  margin-right: 5px;
+  font-size: 38px;
+}
+
+h1 span.image {
+  background: url(https://whatsup.org.il/themes/WhatsupNG/images/header_logo.png);
+  width: 181px;
+  height: 51px;
+  float: left;
 }
 
 pre {
   direction: ltr;
 }
+
 a {
   color: #00B7FF;
 }
 
+div.articles {
+  padding: 5px;
+}
 div.article {
   padding: 5px;
   margin-bottom: 10px;

@@ -4,16 +4,61 @@ var request = require("request");
 var cheerio = require("cheerio");
 var encoding = require("encoding");
 
-class WhatsupCrawler {
+function extractArticle(element) {
+    let article = {
+        title: "", info: ""
+    };
+    var e = cheerio(element)
+    var a = e.find("a");
+    article.title = a.text();
+    article.number = a.attr("href").replace("print.php?sid=", "")
+    article.info = e.find("span").text();
+    return article;
+}
 
+class WhatsupCrawler {
     constructor(baseURL) {
         this.baseURL = baseURL;
     }
+
+    fetchMainPage(callback) {
+        var url = this.baseURL + "/modules.php?op=modload&name=AvantGo&file=index";
+        var options = {
+            method: 'GET',
+            url: url,
+            encoding: 'binary' 
+        };
+
+        var mainPage = {
+            articles: [],
+            forums: []
+        }
     
-    // TODO - detect errors when passing wrong API numbers
+        request(options, function(err, body) {
+            if (err != null) {
+                console.log(err); 
+                callback(null, err);
+                return;
+            }
+            let utf8Body = encoding.convert(body.body, 'UTF8', 'CP1255').toString();
+            let $ = cheerio.load(utf8Body);
+            let lists = $("ul").toArray();
+            cheerio(lists[0]).find("li").each(function(index, element) {
+                mainPage.articles.push(extractArticle(element));
+            });
+            cheerio(lists[1]).find("li").each(function(index, element) {
+                mainPage.forums.push(extractArticle(element));
+            });
+            callback(mainPage, null);
+        });
+    }
+    
+    // TODO 
+    // - detect errors when passing wrong API numbers
+    // - truely return Java text and not objects/nodes
     fetchArticle(articleID, callback) {
         var url = this.baseURL + "/modules.php?op=modload&name=News&file=article&sid=" + articleID;
-        console.log('GET: %s', url);
+        // console.log('GET: %s', url);
     
         var options = {
             method: 'GET',
