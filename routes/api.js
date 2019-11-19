@@ -20,7 +20,7 @@ router.get('/articles', function(req, res, next) {
   client.fetchMainPage(function(mainPage, error){
     if (error != null) {
       console.log(error)
-      res.render("error")
+      res.json(null);
       return;
     }
 
@@ -33,10 +33,22 @@ router.get('/article/:id', function(req, res, next) {
   client.fetchArticle( articleID, function(article, error) {
     if (error != null) {
         console.log(error)
-        res.render("error")
+        res.json(null);
         return;
     }
     res.json(article);
+  });
+});
+
+router.get("/forums", function(req, res, next) {
+  client.fetchMainPage(function(mainPage, error){
+    if (error != null) {
+      console.log(error)
+      res.json(null);
+      return;
+    }
+
+    res.json(mainPage.forums);
   });
 });
 

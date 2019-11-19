@@ -7,12 +7,12 @@ block content
     ul
       each article in articles
         li
-          a(href="article/" + article.number) !{article.title}
-          span &nbsp; - &rlm; !{article.date}
+          a(href="article/" + article.number) !{article.title} <br />
+          span !{article.date}
           //- pan &nbsp; - &rlm; !{article.date}  &rlm; !{article.category}
     h2= "פורומים"
     ul
-      each article in forums
-        li !{article.title} | !{article.date}
-          a(href="forum/" + article.number) !{article.title}
-          span &nbsp; | !{article.date}
+      each post in forums
+        li
+          a(href="forum/" + post.number) !{post.title} <br />
+          span !{post.date} |  !{post.responseCount} | !{post.category}

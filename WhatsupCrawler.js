@@ -4,17 +4,39 @@ var request = require("request");
 var cheerio = require("cheerio");
 var encoding = require("encoding");
 
-function extractArticle(element) {
+
+function parseHTML(rawHTML) {
+    return cheerio("<div>").html(rawHTML).text().trim();
+}
+
+function extractItem(element) {
     let article = {};
-    var e = cheerio(element)
+    var e = cheerio(element);
     var a = e.find("a");
     var t = e.find("span").html();
     var i = t.split("|")[1].split("<br>");
     article.title = a.text();
-    article.number = a.attr("href").replace("print.php?sid=", "")
+    article.number = a.attr("href");
     article.date = i[1];
-    article.category = cheerio('<div>').html(i[0]).text().trim();
+    article.category = parseHTML(i[0]);
     return article;
+}
+
+function extractForum(element) {
+    var item = extractItem(element);
+    var s = cheerio(element).find("span").html().split("|");
+    var t = s[2].split("<br>");
+    item.number = item.number.replace("index.php?name=PNphpBB2&file=printview&t=", "")
+    item.category =  parseHTML(s[1]);
+    item.responseCount = parseHTML(t[0]);
+    item.date = parseHTML(t[1]);
+    return item;
+}
+
+function extractArticle(element) {
+    var item = extractItem(element);
+    item.number = item.number.replace("print.php?sid=", "")
+    return item;
 }
 
 class WhatsupCrawler {
@@ -48,7 +70,7 @@ class WhatsupCrawler {
                 mainPage.articles.push(extractArticle(element));
             });
             cheerio(lists[1]).find("li").each(function(index, element) {
-                mainPage.forums.push(extractArticle(element));
+                mainPage.forums.push(extractForum(element));
             });
             callback(mainPage, null);
         });
@@ -76,9 +98,15 @@ class WhatsupCrawler {
             let utf8Body = encoding.convert(body.body, 'UTF8', 'CP1255').toString();
             let $ = cheerio.load(utf8Body);
             let articleHTML = $("div.ng_article");
-            
+
+            if (articleHTML.text().length == 0) {
+                console.log("Could not parse original site");
+                callback(null, err);
+                return;
+            }
+
             let article = {};
-            let metaData = articleHTML.find("div.ng_info_row").text().split("·")
+            let metaData = articleHTML.find("div.ng_info_row").text().trim().split("·")
 
             // basic structure
             article.content = articleHTML.find("span.pn-art").remove("a.pn-normal");
