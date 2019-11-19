@@ -5,17 +5,15 @@ var cheerio = require("cheerio");
 var encoding = require("encoding");
 
 function extractArticle(element) {
-    let article = {
-        title: "", info: ""
-    };
+    let article = {};
     var e = cheerio(element)
     var a = e.find("a");
-    var info = e.find("span").html().split("|");
-
+    var t = e.find("span").html();
+    var i = t.split("|")[1].split("<br>");
     article.title = a.text();
     article.number = a.attr("href").replace("print.php?sid=", "")
-    article.date = info[1].split("<br>")[1];
-    article.category = info[1].split("<br>")[0];
+    article.date = i[1];
+    article.category = cheerio('<div>').html(i[0]).text().trim();
     return article;
 }
 

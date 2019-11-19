@@ -9,9 +9,10 @@ block content
         li
           a(href="article/" + article.number) !{article.title}
           span &nbsp; - &rlm; !{article.date}
+          //- pan &nbsp; - &rlm; !{article.date}  &rlm; !{article.category}
     h2= "פורומים"
     ul
       each article in forums
-        li !{article.title} | !{article.info}
+        li !{article.title} | !{article.date}
           a(href="forum/" + article.number) !{article.title}
-          span &nbsp; | !{article.info}
+          span &nbsp; | !{article.date}
