@@ -82,13 +82,11 @@ class WhatsupCrawler {
     fetchArticle(articleID, callback) {
         var url = this.baseURL + "/modules.php?op=modload&name=News&file=article&sid=" + articleID;
         // console.log('GET: %s', url);
-    
         var options = {
             method: 'GET',
             url: url,
             encoding: 'binary' 
         };
-    
         request(options, function(err, body) {
             if (err != null) {
                 console.log(err); 
@@ -144,11 +142,75 @@ class WhatsupCrawler {
                 var origHref = $(element).attr("href");
                 // console.log("a %d", origHref);
                 if (origHref.startsWith("/")) {
-                    $(element).attr("href", "https://whatsup.org.il" + origHref);
+                    $(element).attr("href", "https://whatsup.org.il/" + origHref);
                 }
             });
             article.content = article.content.html()
             callback(article, null);
+        });
+    }
+
+    fetchForumTopic(topicID, callback) {
+        // var url = this.baseURL + "/index.php?name=PNphpBB2&file=printview&t=" + topicID;
+        var url = this.baseURL + "/index.php?name=PNphpBB2&file=viewtopic&t=" + topicID;
+        // console.log('GET: %s', url);
+        var options = {
+            method: 'GET',
+            url: url,
+            encoding: 'binary' 
+        }
+        request(options, function(err, body) {
+            if (err != null) {
+                console.log(err); 
+                callback(null, err);
+                return;
+            }
+            let utf8Body = encoding.convert(body.body, 'UTF8', 'CP1255').toString();
+            let $ = cheerio.load(utf8Body);
+/*            
+            let topicHTML = $("span.Topic");
+            let posts = $("hr:not(.sep)").map((index,hr)=>{
+                let content = $(hr).nextUntil('hr:not(.sep)').map((index,p)=>$.html(p)).get().join('');
+                let author = cheerio(content).html();
+                let postContent = cheerio(content).remove("<b:nth-child(1)>").html();
+                return {
+                    author: author,
+                    // content: content,
+                    postContent: postContent
+                };
+              }).get();
+            let posts2 = $("body").html().split("<hr>");
+*/
+            var topic = {};
+            topic.title = $("h1").text().trim();
+            topic.id = topicID;
+            topic.posts = [];
+            var postsHtml = $("#ng_content_wrapper table table tr").next().each( function(index, element){
+            // var postsHtml = $("#ng_content_wrapper table table:nth-child(0) tr").each( function(index, element){
+                var postNum = Math.floor(index / 4);
+                var postPart = index % 4;
+
+                var t = cheerio(element)
+                console.log("index = " + postNum + " part = " + postPart + ": " + t.text())
+                switch (postPart) {
+                    case 0:
+                        topic.posts.push({title:"", content: ""});
+                        topic.posts[postNum].title = t.text();
+                        break;
+                    case 1:
+                        topic.posts[postNum].content = t.html();
+                        break;
+                    case 2:
+                        // "replay, post"
+                        break;
+                    case 3:
+                        // "back to top"
+                        // console.log(topic);
+                        break;
+                }
+            });
+            // console.log(topic)
+            callback(topic, null);
         });
     }
 };

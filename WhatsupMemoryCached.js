@@ -40,6 +40,23 @@ class WhatsupMemoryCached {
             callback(article, null);
         });
     }
+
+    fetchForumTopic(topicID, callback) {
+        var topic = this.cache.get("forum/" + topicID)
+        if (topic != null) {
+            console.log("Forum topic " + topicID + " was found in cache - using it");
+            callback(topic, null);
+            return null;
+        }
+
+        console.log("Forum topic " + topicID  +" is not in cache - getting");
+        var _cache = this.cache;
+        this.client.fetchForumTopic( topicID, function(topic, error) {
+            _cache.put("forum/" + topicID, topic, DefaultCacheTimeout );
+            console.log("Forum topic " + topicID + " stored in cache")
+            callback(topic, null);
+        });
+    }
 };
 
 module.exports = WhatsupMemoryCached;

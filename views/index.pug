@@ -14,5 +14,5 @@ block content
     ul
       each post in forums
         li
-          a(href="forum/" + post.number) !{post.title} <br />
+          a(href="api/forum/" + post.number) !{post.title} <br />
           span !{post.date} |  !{post.responseCount} | !{post.category}

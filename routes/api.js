@@ -52,4 +52,16 @@ router.get("/forums", function(req, res, next) {
   });
 });
 
+router.get("/forum/:id", function(req, res, next) {
+  var articleID = req.params.id;
+  client.fetchForumTopic(articleID, function(forumTopic, error) {
+    if (error != null) {
+        console.log(error)
+        res.json(null);
+        return;
+    }
+    res.json(forumTopic);
+  });
+});
+
 module.exports = router;
