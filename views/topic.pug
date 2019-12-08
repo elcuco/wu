@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div.articles
+    h2 #{title}
+
+    div.comments
+      each post in posts
+        div.comment
+          if post.title != null && post.title != ""
+            div.title
+                span.prefix נושא ההודעה:&nbsp;
+                span.title #{post.title} <br>
+                span.author #{post.author} |  &rlm;
+                span.date #{post.date}
+          else 
+            div.title 
+                span.author #{post.author} |  &rlm;
+                span.date #{post.date}
+          div.content !{post.content}

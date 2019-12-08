@@ -78,18 +78,42 @@ div.date {
 }
 
 div.comments {
+}
 
+div.comments div.title {
+  background-color: #e2e9f1;
+  line-height: 2em;
+}
+
+div.comments div.title span.prefix {
+  font-weight: bold;
+}
+
+div.comments div.title span.author {
+  font-weight: bold;
+}
+
+div.comments div.title span.date {
 }
 
 div.comments div.comment {
   padding-bottom:  10px;
   margin-bottom: 1px solid blue;
+  margin-bottom: 10px;
 }
 
-div.comments  div.comment div.author {
+div.comments div.comment div.author {
   background-color: #d0dde6;
 }
 
-div.comments  div.comment  div.content {
-  background-color: #e9eff4;
+div.comments div.comment:first  div.content {
+  /* background-color: #e9eff4;   */
+  padding-top: 10px;
+  background-color: blueviolet;
 }
+
+div.comments div.comment.first  div.content {
+  background-color: #e9eff4;
+  padding-top: 10px;
+}
+
