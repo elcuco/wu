@@ -2,9 +2,10 @@ extends layout
 
 block content
   div.articles
-    h2 #{title}
-    div.date #{date} | #{author}
-    div.article !{content}
+    div.article
+      h2 #{title}
+      div.date #{date} | #{author}
+      div.article !{content}
 
     div.comments
       each comment in comments

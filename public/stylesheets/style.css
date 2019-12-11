@@ -1,6 +1,6 @@
 body {
   padding: 0px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
   direction: rtl;
   padding: 0px;
   margin: 0px;
@@ -65,19 +65,29 @@ a {
 }
 
 div.articles {
-  padding: 5px;
+  padding: 0px;
 }
+
 div.article {
   padding: 5px;
   margin-bottom: 10px;
 }
 
 div.date {
-    border-bottom: 1px solid silver;
-    margin-bottom: 10px;
+  border-bottom: 1px solid silver;
+  margin-bottom: 10px;
 }
 
-div.comments {
+div.articles div.comments {
+  padding: 5px;
+}
+
+div.topic div.comments div.title, 
+div.topic div.comments div.content {
+  padding: 0px 5px 0px 5px;
+}
+
+div.comments div.comment {
 }
 
 div.comments div.title {
@@ -97,7 +107,7 @@ div.comments div.title span.date {
 }
 
 div.comments div.comment {
-  padding-bottom:  10px;
+  padding-bottom: 5px;
   margin-bottom: 1px solid blue;
   margin-bottom: 10px;
 }
@@ -107,13 +117,33 @@ div.comments div.comment div.author {
 }
 
 div.comments div.comment:first  div.content {
-  /* background-color: #e9eff4;   */
-  padding-top: 10px;
-  background-color: blueviolet;
-}
-
-div.comments div.comment.first  div.content {
   background-color: #e9eff4;
-  padding-top: 10px;
 }
 
+div.comments div.comment div.content {
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+  background-color: #ececdd;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+      
+.code {
+	/* direction: ltr;
+	background: #eee;
+  border: 1px dotted #777;
+   */
+
+  background-color: #f8f8ff;
+  color: #000000;
+    /* font: 12px Courier,'Courier New',sans-serif; */
+  overflow: auto;
+  max-height: 200px;
+  margin: 0 20px;
+  padding: 5px;
+  direction: ltr;
+  border-top: 1px solid #73d216;
+  border-bottom: 1px solid #73d216;
+  border-right: 0 none;
+  border-left: 0 none;
+}
