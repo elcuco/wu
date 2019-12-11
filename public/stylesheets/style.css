@@ -55,6 +55,13 @@ h1 span.image {
   float: left;
 }
 
+div.topic h2 {
+  color: #f57900;
+  font-size: 25px;
+  margin: 0;
+  padding: 5px;
+}
+
 pre {
   direction: ltr;
 }
@@ -116,7 +123,7 @@ div.comments div.comment div.author {
   background-color: #d0dde6;
 }
 
-div.comments div.comment:first  div.content {
+div.comments div.comment:first div.content {
   background-color: #e9eff4;
 }
 

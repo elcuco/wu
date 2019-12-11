@@ -174,10 +174,10 @@ class WhatsupCrawler {
             let utf8Body = encoding.convert(body.body, 'UTF8', 'CP1255').toString();
             let $ = cheerio.load(utf8Body);
 
-            let topicHTML = $("span.Topic");
+            let topicTitle = parseHTML($("span.Topic")).split("-")[1].trim();
             let posts = $("hr:not(.sep)").map((index,hr)=>{
                 let content = $(hr).nextUntil('hr:not(.sep)').map((index,p)=>$.html(p)).get().join('');
-                let author = cheerio(content).html();
+                let author = parseHTML(content);
                 let postContent = cheerio(content).remove("<b:nth-child(1)>").html();
                 return {
                     author: author,
@@ -186,9 +186,8 @@ class WhatsupCrawler {
                 };
               }).get();
 
-            var topic = { posts: [] };
+            var topic = { subject: topicTitle, posts: [] };
             let sections = $("body").html().split("<hr>");
-            topic.rawSections = sections;
             for (var index=1; index<sections.length-1; index++) {
                 var section = sections[index];
                 var parts = section.split("<hr class=\"sep\">");
@@ -197,10 +196,10 @@ class WhatsupCrawler {
                 var author = metaParts[0];
                 var date = metaParts[1] + " " + stringUntil( metaParts[2], "<br>");
                 var contentHTML = parts[1];
-                var topicTitle = parts[0].split("<br>")[1].replace("&#x5E0;&#x5D5;&#x5E9;&#x5D0; &#x5D4;&#x5D4;&#x5D5;&#x5D3;&#x5E2;&#x5D4;: ","").trim();
+                var replyTitle = parts[0].split("<br>")[1].replace("&#x5E0;&#x5D5;&#x5E9;&#x5D0; &#x5D4;&#x5D4;&#x5D5;&#x5D3;&#x5E2;&#x5D4;: ","").trim();
 
                 var i = topic.posts.push({title:"", author:"", date:"", content:""});
-                topic.posts[i-1].title = parseHTML(topicTitle, true);
+                topic.posts[i-1].title = parseHTML(replyTitle, true);
                 topic.posts[i-1].author = parseHTML(author, true);
                 topic.posts[i-1].date = date.trim();
                 // topic.posts[i-1].content = parseHTML(contentHTML);
