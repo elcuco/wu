@@ -1,9 +1,8 @@
 'use strict'
 
 var request = require("request");
-var cheerio = require("cheerio");
 var encoding = require("encoding");
-
+var cheerio = require("cheerio");
 
 function parseHTML(rawHTML, nullifyIfEmpty=false) {
     var text = cheerio("<div>").html(rawHTML).text().trim();
@@ -47,6 +46,7 @@ function extractForum(element) {
 function extractArticle(element) {
     var item = extractItem(element);
     item.number = item.number.replace("print.php?sid=", "")
+    item.summary = "???";
     return item;
 }
 

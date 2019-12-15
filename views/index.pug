@@ -4,12 +4,16 @@ extends layout
 block content
   div.articles
     h2= "ידיעות"
-    ul
-      each article in articles
-        li
-          a(href="article/" + article.number) !{article.title} <br />
-          span !{article.date}
-          //- pan &nbsp; - &rlm; !{article.date}  &rlm; !{article.category}
+    each article in articles
+      div.article
+        div.title
+          a(href="article/" + article.number) !{article.title}
+        div.meta
+          span.date !{article.date}  &rlm;
+          span.category !{article.category}
+        div.summary !{article.summary}
+
+  div.articles
     h2= "פורומים"
     ul
       each post in forums
