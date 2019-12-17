@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-//var whatsup = require("../WhatsupCrawler");
-var whatsup = require("../WhatsupMemoryCached");
+// var whatsup = require("../WhatsupCrawler");
+// var whatsup = require("../WhatsupMemoryCached");
+var whatsup = require("../WhatsupRSS");
 var client = new whatsup("https://whatsup.org.il")
 
 router.get('/index', function(req, res, next) {

@@ -46,7 +46,7 @@ function extractForum(element) {
 function extractArticle(element) {
     var item = extractItem(element);
     item.number = item.number.replace("print.php?sid=", "")
-    item.summary = "???";
+    item.summary = null;
     return item;
 }
 
