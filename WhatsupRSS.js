@@ -16,9 +16,6 @@ function parseHTML(rawHTML, nullifyIfEmpty=false) {
 function getItem(baseURL, url) {
 var remove = baseURL + "/modules.php?op=modload&name=News&file=article&rss=1&sid=";
     var id = url.replace(remove, "")
-    console.log("->"  + url)
-    console.log("* "  + baseURL)
-    console.log("<-"  + remove)
     return id
 }
 
