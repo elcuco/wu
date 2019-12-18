@@ -3,9 +3,11 @@
 var express = require('express');
 var router = express.Router();
 
-// var whatsup = require("../WhatsupCrawler");
+var whatsupCrawler = require("../WhatsupCrawler");
+var whatsupRSS = require("../WhatsupRSS");
 var whatsup = require("../WhatsupMemoryCached");
-var client = new whatsup("https://whatsup.org.il")
+var impl = new whatsupRSS("http://whatsup.org.il")
+var client = new whatsup(impl)
 
 router.get('/:id', function(req, res, next) {
     var articleID = req.params.id;

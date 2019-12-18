@@ -1,10 +1,9 @@
-var whatsupCrawler = require("./WhatsupCrawler");
 var DefaultCacheTimeout = 1000 * 90; // 90 seconds of time cache
 
 class WhatsupMemoryCached {
-    constructor(baseURL) {
+    constructor(whastUpImpl) {
         this.cache = require('memory-cache');
-        this.client = new whatsupCrawler(baseURL);
+        this.client = whastUpImpl;
     }
 
     fetchMainPage(callback) {

@@ -87,7 +87,6 @@ class WhatsupRSS {
 
         var count = 0;
         this.fetchArticlesRSS(function (articles, err) {
-        // this.fetchBackendRSS("/backend.php?utf8=1", getArticleID, function (articles, err) {
             count ++;
             if (err != null) {
                 console.log("Failed fetching articles RSS")
@@ -105,7 +104,6 @@ class WhatsupRSS {
         });
 
         this.fetchTopicsRSS(function (topics, err){
-        // this.fetchBackendRSS("/backend-forums.php?utf8=1", getForumID, function (topics, err) {
             count ++;
             if (err != null) {
                 console.log(err); 
