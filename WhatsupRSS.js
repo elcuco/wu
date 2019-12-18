@@ -1,9 +1,10 @@
 'use strict'
 
 var request = require("request");
-var encoding = require("encoding");
 var parseXmlString = require('xml2js').parseString;
 var cheerio = require("cheerio");
+var url = require('url');
+var WhatsupCrawler = require("./WhatsupCrawler");
 
 function parseHTML(rawHTML, nullifyIfEmpty=false) {
     var text = cheerio("<div>").html(rawHTML).text().trim();
@@ -13,19 +14,25 @@ function parseHTML(rawHTML, nullifyIfEmpty=false) {
     return text.length == 0 ? null : text
 }
 
-function getItem(baseURL, url) {
-var remove = baseURL + "/modules.php?op=modload&name=News&file=article&rss=1&sid=";
-    var id = url.replace(remove, "")
-    return id
+function getArticleID(articleURL) {
+    var url_parts = url.parse(articleURL, true);
+    var query = url_parts.query;
+    return query.sid;
 }
 
-function getArticles(baseURL, items) {
+function getForumID(articleURL) {
+    var url_parts = url.parse(articleURL, true);
+    var query = url_parts.query;
+    return query.t;
+}
+
+function getArticles(baseURL, items, getItem) {
     var articles = [];
     for (var i in items) {
         var item = items[i];
         var article = {};
         article.title = parseHTML(item.title[0]);
-        article.number = getItem(baseURL, item.link[0]);
+        article.number = getItem(item.link[0]);
         article.date = parseHTML(item.pubDate[0]);
         article.category = null;
         article.summary = parseHTML(item.description[0]);
@@ -39,9 +46,10 @@ function getArticles(baseURL, items) {
 class WhatsupRSS {
     constructor(baseURL) {
         this.baseURL = baseURL;
+        this.crawler = new WhatsupCrawler(baseURL);
     }
 
-    fetchBackendRSS(backend, callback) {
+    fetchBackendRSS(backend, getItem, callback) {
         var url = this.baseURL + backend;
         var options = {
             method: 'GET',
@@ -56,20 +64,19 @@ class WhatsupRSS {
                 callback(null, err);
                 return;
             }
-            let utf8Body = body.body // encoding.convert(body.body, 'UTF8', 'CP1255').toString();
-            parseXmlString(utf8Body, function (err, result) {
-                var articles = getArticles(vvv, result.rss.channel[0].item);
+            parseXmlString(body.body, function (err, result) {
+                var articles = getArticles(vvv, result.rss.channel[0].item, getItem);
                 callback(articles, null);
             });
         });
     }
 
     fetchArticlesRSS(callback) {
-        this.fetchBackendRSS("/backend.php?utf8=1", callback)
+        this.fetchBackendRSS("/backend.php?utf8=1", getArticleID, callback)
     }
 
     fetchTopicsRSS(callback) {
-        this.fetchBackendRSS("/backend-forums.php?utf8=1", callback)
+        this.fetchBackendRSS("/backend-forums.php?utf8=1", getForumID, callback)
     }
 
     fetchMainPage(callback) {
@@ -80,6 +87,7 @@ class WhatsupRSS {
 
         var count = 0;
         this.fetchArticlesRSS(function (articles, err) {
+        // this.fetchBackendRSS("/backend.php?utf8=1", getArticleID, function (articles, err) {
             count ++;
             if (err != null) {
                 console.log("Failed fetching articles RSS")
@@ -97,6 +105,7 @@ class WhatsupRSS {
         });
 
         this.fetchTopicsRSS(function (topics, err){
+        // this.fetchBackendRSS("/backend-forums.php?utf8=1", getForumID, function (topics, err) {
             count ++;
             if (err != null) {
                 console.log(err); 
@@ -110,6 +119,14 @@ class WhatsupRSS {
                 console.log("Read topics, waiting for articles to arrive")
             }
         });
+    }
+
+    fetchArticle(articleID, callback) {
+        this.crawler.fetchArticle(articleID, callback)
+    }
+
+    fetchForumTopic(topicID, callback) {
+        this.crawler.fetchForumTopic(topicID, callback)
     }
 }
 
