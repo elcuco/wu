@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var WhatsupCrawler = require("../WhatsupCrawler");
+var whatsupCrawler = require("../WhatsupCrawler");
 var whatsupRSS = require("../WhatsupRSS");
 var whatsup = require("../WhatsupMemoryCached");
 var impl = new whatsupRSS("http://whatsup.org.il")
